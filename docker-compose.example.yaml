@@ -1,7 +1,9 @@
 services:
   ultrasinger:
+    image: msylvan26/ultrasinger:latest
     build:
       context: ./build
+    # NOTE: uncomment below if you want to use GPU acceleration
     # deploy:
     # resources:
     #   reservations:
@@ -10,12 +12,9 @@ services:
     #         count: all
     #         capabilities:
     #           - gpu
-    stdin_open: true
-    tty: true
-    container_name: UltraSinger
+    container_name: ultrasinger
     volumes:
       - ./output:/app/UltraSinger/src/output
-    image: rakuri255/ultrasinger:latest
     environment:
-      - PID=1000
-      - UID=1000
+      - PGID=1000
+      - PUID=1000
