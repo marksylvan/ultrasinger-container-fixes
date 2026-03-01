@@ -11,14 +11,14 @@ USER 1000:1000
 USER root
 ENV QT_QPA_PLATFORM=offscreen
 RUN apt-get update && \
-    apt-get install musescore && \
+    apt-get install -y musescore && \
     rm -rf /var/lib/apt/lists/*
 USER 1000:1000
 
 # install deno, required for yt-dlp
 USER root
 RUN apt-get update && \
-    apt-get install unzip && \
+    apt-get install -y unzip && \
     rm -rf /var/lib/apt/lists/*
 RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh -s -- --no-modify-path -y
 USER 1000:1000
