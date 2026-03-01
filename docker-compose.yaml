@@ -1,0 +1,21 @@
+services:
+  ultrasinger:
+    build:
+      context: ./build
+    # deploy:
+    # resources:
+    #   reservations:
+    #     devices:
+    #       - driver: nvidia
+    #         count: all
+    #         capabilities:
+    #           - gpu
+    stdin_open: true
+    tty: true
+    container_name: UltraSinger
+    volumes:
+      - ./output:/app/UltraSinger/src/output
+    image: rakuri255/ultrasinger:latest
+    environment:
+      - PID=1000
+      - UID=1000
