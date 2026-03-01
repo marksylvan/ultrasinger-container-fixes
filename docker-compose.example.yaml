@@ -1,8 +1,9 @@
 services:
   ultrasinger:
     image: msylvan26/ultrasinger:latest
-    build:
-      context: ./build
+    # NOTE: uncomment below to build from source
+    # build:
+    #   context: ./build
     # NOTE: uncomment below if you want to use GPU acceleration
     # deploy:
     # resources:
