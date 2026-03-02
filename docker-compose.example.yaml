@@ -15,7 +15,14 @@ services:
     #           - gpu
     container_name: ultrasinger
     volumes:
+      - user-cache:/home/appuser/.cache
+      # or delete line above and volumes below and uncomment next line if you want cache pointing to a specific path
+      # - ./cache:/home/appuser/.cache
       - ./output:/app/UltraSinger/src/output
     environment:
       - PGID=1000
       - PUID=1000
+
+
+volumes:
+  user-cache:
