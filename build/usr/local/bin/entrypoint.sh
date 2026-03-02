@@ -28,5 +28,17 @@ if [ -d "$TARGET_DIR" ]; then
     chown -R "$USER_ID:$GROUP_ID" "$TARGET_DIR"
 fi
 
-# 4. Drop privileges and execute CMD as PID 1
-exec gosu "$ACTUAL_USER" "$@"
+if [ "$#" -eq 0 ]; then
+    gosu "$ACTUAL_USER" python3 /app/UltraSinger/src/UltraSinger.py "$@" || true
+    echo "No arguments given, keeping container alive"
+    exec tail -f /dev/null
+elif [ "$1" = "shell" ]; then
+    echo "Spawning shell as $ACTUAL_USER"
+    exec gosu "$ACTUAL_USER" /bin/bash
+elif [ "$1" = "root" ]; then
+    echo "Spawning root shell"
+    exec /bin/bash
+else
+    echo "Running UltraSinger with args '$*'"
+    exec gosu "$ACTUAL_USER" python3 /app/UltraSinger/src/UltraSinger.py --musescore_path /usr/bin/musescore "$@"
+fi
