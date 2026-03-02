@@ -29,6 +29,25 @@ if [ -d "$TARGET_DIR" ]; then
     chown -R "$USER_ID:$GROUP_ID" /home/appuser/.cache
 fi
 
+whisper_x_upgrade_marker=/home/appuser/.whisperx-startup-upgrade-complete
+if [ ! -f $whisper_x_upgrade_marker ]; then
+    # upgrade checkpoint file on first startup
+    echo "Upgrading WhisperX checkpoint file on initial startup"
+    if ls /dev/nvidia* >/dev/null 2>&1; then
+        echo "NVIDIA GPU detected"
+        gosu "$ACTUAL_USER" python3 -m pytorch_lightning.utilities.upgrade_checkpoint \
+            ../.venv/lib/python3.10/site-packages/whisperx/assets/pytorch_model.bin
+    else
+        echo "No NVIDIA GPU detected, mapping to CPU"
+        gosu "$ACTUAL_USER" python3 -m pytorch_lightning.utilities.upgrade_checkpoint \
+            ../.venv/lib/python3.10/site-packages/whisperx/assets/pytorch_model.bin \
+            --map-to-cpu
+    fi
+    touch $whisper_x_upgrade_marker
+else
+    echo "WhisperX checkpoint upgrade already done, skipping"
+fi
+
 if [ "$#" -eq 0 ]; then
     gosu "$ACTUAL_USER" python3 /app/UltraSinger/src/UltraSinger.py "$@" || true
     echo "No arguments given, keeping container alive"
