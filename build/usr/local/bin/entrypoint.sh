@@ -32,7 +32,7 @@ fi
 if [ "$#" -eq 0 ]; then
     gosu "$ACTUAL_USER" python3 /app/UltraSinger/src/UltraSinger.py "$@" || true
     echo "No arguments given, keeping container alive"
-    exec tail -f /dev/null
+    exec sleep infinity
 elif [ "$1" = "shell" ]; then
     echo "Spawning shell as $ACTUAL_USER"
     exec gosu "$ACTUAL_USER" /bin/bash
