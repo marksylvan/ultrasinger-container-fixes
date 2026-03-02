@@ -26,6 +26,7 @@ fi
 TARGET_DIR="/app/UltraSinger/src/output"
 if [ -d "$TARGET_DIR" ]; then
     chown -R "$USER_ID:$GROUP_ID" "$TARGET_DIR"
+    chown -R "$USER_ID:$GROUP_ID" /home/appuser/.cache
 fi
 
 if [ "$#" -eq 0 ]; then
